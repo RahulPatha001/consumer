@@ -1,5 +1,7 @@
 package com.devrahul.userservice.consumer;
 
+import com.devrahul.userservice.entities.UserInfo;
+import com.devrahul.userservice.entities.UserInfoDto;
 import com.devrahul.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,9 @@ public class AuthServiceConsumer {
     }
 
     @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = "${spring.kafka.topic.name}")
-    public void listen(Object eventData){
+    public void listen(UserInfoDto eventData){
         try {
+            UserInfo userInfo = eventData.transformToUserInfo();
             System.out.println(eventData);
         }catch (Exception ex){
             ex.printStackTrace();
